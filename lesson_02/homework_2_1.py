@@ -72,7 +72,8 @@ def get_salary_from_text(salary_string):
     # 120 000-150 000 руб.</span>
     # 250 000-500 000 KZT</span>
 
-    prepared_string = salary_string.replace(' ', '')
+    prepared_string = salary_string.replace('\xa0', '')
+    prepared_string = prepared_string.replace(' ', '')
 
     if prepared_string.startswith('до'):
         # Парсим вариант "до ..."
