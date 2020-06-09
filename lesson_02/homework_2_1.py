@@ -30,7 +30,7 @@ def get_html_page_text_from_hh(vacancy_name='Data analyst', direct_link=None):
         'enable_snippets': 'true',
         'salary': '',
         'st': 'searchVacancy',
-        'text': vacancy_name.replace(' ', '+'),
+        'text': vacancy_name,
         'fromSearch': 'true'
     }
 
