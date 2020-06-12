@@ -77,7 +77,7 @@ def get_salary_from_text(salary_string):
 
     if prepared_string.startswith('до'):
         # Парсим вариант "до ..."
-        result = re.findall('(\d+)(\w+\.?\w*\.?)', prepared_string)
+        result = re.findall(r'(\d+)(\w+\.?\w*\.?)', prepared_string)
         salary_from = None
         try:
             salary_currency = result[0][1]
@@ -91,7 +91,7 @@ def get_salary_from_text(salary_string):
 
     elif prepared_string.startswith('от'):
         # Парсим вариант "от ..."
-        result = re.findall('(\d+)(\w+\.?\w*\.?)', prepared_string)
+        result = re.findall(r'(\d+)(\w+\.?\w*\.?)', prepared_string)
         salary_to = None
         try:
             salary_currency = result[0][1]
@@ -105,7 +105,7 @@ def get_salary_from_text(salary_string):
 
     else:
         # Парсим вариант, когда указаны обе границы зарплаты
-        result = re.findall('(\d+)-(\d+)(\w+\.?\w*\.?)', prepared_string)
+        result = re.findall(r'(\d+)-(\d+)(\w+\.?\w*\.?)', prepared_string)
         try:
             salary_currency = result[0][2]
         except:
@@ -163,9 +163,9 @@ while True:
             tag = vacancy_div.find('a', {'data-qa': 'vacancy-serp__vacancy-employer'})
             employer_name = tag.text.strip()
 
-            # Тэг <span> с адресом
+            # Тэг <span> с адресом (здесь в span-е встречаются разные варианта контента)
             tag = vacancy_div.find('span', {'data-qa': 'vacancy-serp__vacancy-address'})
-            employer_city = tag.text
+            employer_city = tag.contents[0]
             employer_city = employer_city.split(',')[0]
 
             # Тэг <span> с зарплатой
@@ -203,3 +203,6 @@ while True:
 output_filename = searching_vacancy.lower().replace(' ', '_') + '_vacancies.json'
 with open(output_filename, 'w', encoding='utf-8') as my_file:
     json.dump(vacancies_data, my_file, ensure_ascii=False, indent=4)
+
+# Печать результатов
+print(f'В файл {output_filename} сохранено {len(vacancies_data)} вакансий.')
